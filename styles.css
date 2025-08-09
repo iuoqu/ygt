@@ -1,0 +1,821 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #8B4513;
+    --secondary: #D2691E;
+    --accent: #FFD700;
+    --dark: #2C2C2C;
+    --light: #FDFDFD;
+    --warm: #FFF8F0;
+}
+
+/* --- Cafe-style aesthetic overrides (inspired by minimalist coffee shop sites) --- */
+:root {
+    --cafe-bg: #FAF8F5;
+    --cafe-card: #FFFFFF;
+    --cafe-border: #E7E2DC;
+    --cafe-text: #2A2A2A;
+    --cafe-muted: #6A6A6A;
+    --cafe-accent: #5A3E2B; /* tea-brown */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--dark);
+    background: var(--cafe-bg);
+    color: var(--cafe-text);
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.2px;
+}
+
+p { color: var(--cafe-muted); }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid #E8E8E8;
+    border-bottom: 1px solid var(--cafe-border);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin: 0;
+    font-weight: 700;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-menu a {
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-menu a:hover {
+    color: var(--primary);
+}
+
+.hamburger {
+    display: none;
+}
+
+/* Hero */
+.hero {
+    background: linear-gradient(135deg, var(--warm) 0%, #FFF5E6 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 80px;
+    padding: 140px 20px 100px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.hero-badge {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-badge span {
+    background: var(--primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+}
+
+/* Hero background with image overlay */
+.hero.has-image {
+    background: linear-gradient( to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.15) ),
+                url('images/hero.jpg') center/cover no-repeat;
+}
+.hero.has-image .hero-title,
+.hero.has-image .hero-subtitle {
+    color: #fff;
+}
+.hero.has-image .hero-badge span {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+/* Special offer media layout */
+.offer-media {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    max-width: 500px;
+    margin: 0.75rem auto 0;
+}
+.offer-image {
+    width: 180px;
+    height: 180px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid rgba(255,255,255,0.6);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+}
+.special-offer .qr-code { display: flex; flex-direction: column; align-items: center; }
+.special-offer .qr-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 10px;
+    border: 3px solid rgba(255,255,255,0.6);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+}
+@media (max-width: 520px) {
+    .offer-media { grid-template-columns: 1fr; }
+}
+
+/* About section photo */
+.about-photo {
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem auto 0;
+    display: block;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+}
+
+/* Location storefront photo */
+.location-photo {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}
+.location-photo img {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+}
+
+/* Sections */
+section {
+    padding: 80px 0;
+    padding: 96px 0;
+}
+
+section:nth-child(even) {
+    background: var(--warm);
+}
+
+/* Special Offer */
+.special-offer {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+}
+
+.offer-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.offer-card h2 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.qr-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 3px solid white;
+    margin: 2rem 0 1rem;
+}
+
+/* About */
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-content h2 {
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+.about-content p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Location */
+.location h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+.location > .container > p {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+}
+
+.location-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.location-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.location-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.location-item .icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+/* Experience */
+.experience h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.experience-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid #E8E8E8;
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.experience-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.experience-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.experience-card h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+/* Reviews */
+.reviews h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.review-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--primary);
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.review-card p {
+    font-style: italic;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.review-author {
+    color: #666;
+    font-weight: 500;
+}
+
+.review-cta {
+    text-align: center;
+}
+
+/* Gallery */
+.gallery h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: scale(1.01);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Booking */
+.booking {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+}
+
+.booking-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 3rem;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.booking-card h2 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+.booking-features {
+    list-style: none;
+    margin-bottom: 2rem;
+    text-align: left;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.booking-features li {
+    margin-bottom: 0.5rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.booking-price {
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+/* Contact */
+.contact h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.contact-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.contact-item a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+    color: var(--cafe-accent);
+}
+
+.contact-item a:hover {
+    text-decoration: underline;
+}
+
+.contact-qr {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-top: 0.5rem;
+}
+
+/* Products */
+.products h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 3rem;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.product-item {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid #E8E8E8;
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.product-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.product-item h3 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+/* Map */
+.map-section h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+.map-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-placeholder {
+    text-align: center;
+    color: #666;
+}
+
+.map-placeholder p {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.footer {
+    background: var(--dark);
+    color: white;
+    padding: 60px 0 30px;
+    background: #1E1E1E;
+}
+
+.footer-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-content h3 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+.footer-content p {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    color: var(--cafe-accent);
+}
+
+.footer-links a:hover {
+    color: var(--accent);
+}
+
+.footer-copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 2rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: var(--dark);
+    background: var(--cafe-accent);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #FFC800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: #4c3426;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    color: var(--cafe-accent);
+    border-color: var(--cafe-accent);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    background: var(--cafe-accent);
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+    }
+    
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 4px;
+    }
+    
+    .hamburger span {
+        width: 25px;
+        height: 3px;
+        background: var(--dark);
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-badge {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .location-details,
+    .experience-grid,
+    .reviews-grid,
+    .contact-grid,
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .offer-card,
+    .booking-card {
+        padding: 2rem;
+    }
+    
+    .location-item,
+    .contact-item {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .offer-card,
+    .booking-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Address note styling */
+.address-note {
+    margin-top: 6px;
+    color: #8B4513;
+    background: #FFF3E6;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Directions link */
+.directions-link {
+    color: var(--cafe-accent);
+}
+
+/* High-contrast adjustments for Booking section */
+.booking .booking-card {
+    background: var(--cafe-card);
+    border: 1px solid var(--cafe-border);
+    color: var(--cafe-text);
+}
+.booking .booking-card h2 {
+    color: var(--cafe-accent) !important;
+}
+.booking .booking-card p,
+.booking .booking-card li {
+    color: #3A3A3A;
+}
+.booking .price {
+    color: var(--cafe-accent) !important;
+}
+.booking .btn-primary {
+    background: var(--cafe-accent);
+    color: #fff;
+}

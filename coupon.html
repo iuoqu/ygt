@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Get Your Yu Garden Tea Coupon</title>
+  <meta name="description" content="Enter your name to receive a personalized coupon QR code for Yu Garden Tea. Free tea tasting or 10% OFF.">
+
+  <!-- qrcode.js (CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" referrerpolicy="no-referrer"></script>
+
+  <style>
+    /* Colors */
+    :root {
+      --tea-brown: #5A3E2B;
+      --tea-beige: #D6C6B9;
+      --tea-cream: #F5F3EF;
+      --text: #2b2b2b;
+    }
+    /* Base */
+    html, body { background: var(--tea-cream); color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 24px; }
+    header { text-align: center; margin: 12px 0 24px; }
+    h1 { color: var(--tea-brown); font-size: 1.9rem; margin-bottom: 8px; }
+    p.lead { color: #4a4a4a; font-size: 1rem; line-height: 1.6; }
+
+    /* Card */
+    .card { background: #fff; border: 1px solid #eae7e3; border-radius: 14px; box-shadow: 0 8px 24px rgba(90, 62, 43, 0.08); padding: 20px; }
+
+    /* Form */
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 16px 0 12px; }
+    label { font-weight: 600; color: var(--tea-brown); margin-bottom: 6px; display: inline-block; }
+    input[type="text"], input[type="email"] { width: 100%; border: 2px solid var(--tea-beige); border-radius: 10px; padding: 12px 14px; font-size: 16px; background: #fff; transition: border-color .2s ease; }
+    input[type="text"]:focus, input[type="email"]:focus { outline: none; border-color: var(--tea-brown); }
+    .hint { font-size: 0.85rem; color: #666; }
+
+    /* Buttons */
+    .btn { appearance: none; border: none; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer; transition: transform .1s ease, box-shadow .2s ease, background .2s ease; }
+    .btn-primary { background: var(--tea-brown); color: #fff; box-shadow: 0 6px 14px rgba(90, 62, 43, 0.25); width: 100%; }
+    .btn-primary:hover { transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--tea-brown); border: 2px solid var(--tea-brown); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Results */
+    .result { margin-top: 20px; text-align: center; }
+    .coupon-meta { margin-top: 12px; font-size: 0.95rem; color: #444; line-height: 1.6; }
+    .qr-wrap { display: inline-flex; align-items: center; justify-content: center; width: 260px; height: 260px; border-radius: 16px; background: #fff; border: 1px solid #eee6df; margin: 12px auto 8px; box-shadow: 0 10px 28px rgba(0,0,0,0.08); }
+    .actions { display: flex; gap: 10px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+
+    /* Mobile */
+    @media (max-width: 520px) { .qr-wrap { width: 220px; height: 220px; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Get Your Yu Garden Tea Coupon</h1>
+      <p class="lead">Enter your name to receive your personalized coupon for a free tea tasting or 10% OFF. Show the QR code when you visit our tea shop near Yu Garden.</p>
+    </header>
+
+    <main class="card" role="main" aria-labelledby="title">
+      <!-- Form -->
+      <div class="form-row">
+        <div>
+          <label for="name">Name (required)</label>
+          <input id="name" type="text" placeholder="Your full name" required />
+        </div>
+        <div>
+          <label for="contact">Email or WeChat (optional)</label>
+          <input id="contact" type="text" placeholder="email@example.com or your WeChat ID" />
+          <div class="hint">We only use this to help match your coupon in-store if needed.</div>
+        </div>
+      </div>
+
+      <button id="generateBtn" class="btn btn-primary">Generate Coupon</button>
+
+      <!-- Results -->
+      <div id="result" class="result" hidden>
+        <div class="qr-wrap">
+          <div id="qrcode" aria-label="Coupon QR Code"></div>
+        </div>
+        <div class="coupon-meta">
+          <div id="couponName"></div>
+          <div id="couponCode"></div>
+          <div id="couponUrl" style="word-break: break-all;"></div>
+          <div class="hint">Tip: you can also screenshot the QR code.</div>
+        </div>
+        <div class="actions">
+          <button id="downloadBtn" class="btn btn-outline" disabled>Download QR</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ===== Coupon generator (no logging) =====
+    // Generate coupon ID: YUYU-<year>-<random 4 digits>
+    function generateCouponId() {
+      const year = new Date().getFullYear();
+      const rand = Math.floor(1000 + Math.random() * 9000);
+      return `YUYU-${year}-${rand}`;
+    }
+
+    // Build coupon URL with encoded params
+    function buildCouponUrl(name, code) {
+      const base = 'https://yugardentea.com/coupon';
+      const params = new URLSearchParams({ name: name.trim(), code });
+      return `${base}?${params.toString()}`;
+    }
+
+    // Render QR into container; returns Promise<HTMLCanvasElement|HTMLImageElement>
+    function renderQr(container, text, size = 256) {
+      container.innerHTML = '';
+      return new Promise((resolve) => {
+        const qr = new QRCode(container, {
+          text,
+          width: size,
+          height: size,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.M,
+        });
+        setTimeout(() => {
+          resolve(container.querySelector('canvas') || container.querySelector('img'));
+        }, 50);
+      });
+    }
+
+    // Convert <img> to <canvas> if needed for download
+    function ensureCanvas(drawable) {
+      if (!drawable) return null;
+      const tag = (drawable.tagName || '').toLowerCase();
+      if (tag === 'canvas') return drawable;
+      if (tag === 'img') {
+        const c = document.createElement('canvas');
+        c.width = drawable.naturalWidth || drawable.width;
+        c.height = drawable.naturalHeight || drawable.height;
+        const ctx = c.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, c.width, c.height);
+        ctx.drawImage(drawable, 0, 0, c.width, c.height);
+        return c;
+      }
+      return null;
+    }
+
+    // Elements
+    const $ = (s) => document.querySelector(s);
+    const nameInput = $('#name');
+    const contactInput = $('#contact');
+    const generateBtn = $('#generateBtn');
+    const resultBox = $('#result');
+    const qrContainer = $('#qrcode');
+    const couponName = $('#couponName');
+    const couponCode = $('#couponCode');
+    const couponUrl = $('#couponUrl');
+    const downloadBtn = $('#downloadBtn');
+
+    // Generate button click handler
+    generateBtn.addEventListener('click', async () => {
+      const name = (nameInput.value || '').trim();
+      if (!name) { nameInput.focus(); return; }
+
+      generateBtn.disabled = true;
+      generateBtn.textContent = 'Generating...';
+
+      const couponId = generateCouponId();
+      const url = buildCouponUrl(name, couponId);
+
+      // Render QR
+      const drawable = await renderQr(qrContainer, url, window.innerWidth <= 520 ? 220 : 256);
+      const canvas = ensureCanvas(drawable);
+
+      // Show metadata
+      couponName.textContent = `Name: ${name}`;
+      couponCode.textContent = `Coupon: ${couponId}`;
+      couponUrl.textContent = url;
+      resultBox.hidden = false;
+
+      // Enable download
+      if (canvas) {
+        downloadBtn.disabled = false;
+        downloadBtn.onclick = () => {
+          const link = document.createElement('a');
+          const safeName = name.replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
+          link.download = `yugardentea-coupon-${safeName || 'guest'}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+        };
+      } else {
+        downloadBtn.disabled = true;
+      }
+
+      // Reset button state
+      setTimeout(() => { generateBtn.disabled = false; generateBtn.textContent = 'Generate Coupon'; }, 600);
+    });
+  </script>
+</body>
+</html>
