@@ -16,8 +16,19 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'));
-app.use(express.static('.')); // Serve files from root directory (CSS, JS, images)
+
+// Serve static files from public directory (for reservation system)
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+app.use('/reserve', express.static(path.join(__dirname, 'public')));
+
+// Serve static files from root directory (for main website)
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/styles.css', express.static(path.join(__dirname, 'styles.css')));
+app.use('/script.js', express.static(path.join(__dirname, 'script.js')));
+app.use('/coupon.html', express.static(path.join(__dirname, 'coupon.html')));
+app.use('/sitemap.xml', express.static(path.join(__dirname, 'sitemap.xml')));
+app.use('/robots.txt', express.static(path.join(__dirname, 'robots.txt')));
+app.use('/.htaccess', express.static(path.join(__dirname, '.htaccess')));
 
 // Ensure public/uploads directory exists
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
