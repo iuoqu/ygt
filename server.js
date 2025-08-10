@@ -36,6 +36,69 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// Test Notion API endpoint
+app.get('/api/test-notion', async (req, res) => {
+  try {
+    console.log('=== NOTION API TEST START ===');
+    console.log('Environment variables:');
+    console.log('- NOTION_API_KEY exists:', !!process.env.NOTION_API_KEY);
+    console.log('- NOTION_API_KEY length:', process.env.NOTION_API_KEY?.length || 0);
+    console.log('- NOTION_DATABASE_ID exists:', !!process.env.NOTION_DATABASE_ID);
+    console.log('- NOTION_DATABASE_ID value:', process.env.NOTION_DATABASE_ID);
+    
+    if (!process.env.NOTION_API_KEY || !process.env.NOTION_DATABASE_ID) {
+      console.log('❌ Missing environment variables');
+      return res.status(500).json({
+        error: 'Notion API credentials not configured',
+        NOTION_API_KEY: !!process.env.NOTION_API_KEY,
+        NOTION_DATABASE_ID: !!process.env.NOTION_DATABASE_ID,
+        message: 'Please add NOTION_API_KEY and NOTION_DATABASE_ID to Vercel environment variables'
+      });
+    }
+    
+    console.log('🔧 Testing Notion client initialization...');
+    const testNotion = new Client({ auth: process.env.NOTION_API_KEY });
+    console.log('✅ Notion client created');
+    
+    console.log('🔧 Testing database retrieval...');
+    const database = await testNotion.databases.retrieve({
+      database_id: process.env.NOTION_DATABASE_ID
+    });
+    
+    console.log('✅ Database retrieved successfully');
+    console.log('Database title:', database.title[0]?.plain_text || 'Unknown');
+    console.log('Database properties:', Object.keys(database.properties));
+    console.log('=== NOTION API TEST SUCCESS ===');
+    
+    res.json({
+      success: true,
+      message: 'Notion API is working correctly',
+      database: {
+        id: database.id,
+        title: database.title[0]?.plain_text || 'Unknown',
+        properties: Object.keys(database.properties)
+      }
+    });
+  } catch (error) {
+    console.error('=== NOTION API TEST FAILED ===');
+    console.error('❌ Notion API test failed:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      status: error.status,
+      body: error.body
+    });
+    
+    res.status(500).json({
+      error: 'Notion API Error',
+      message: error.message,
+      code: error.code,
+      status: error.status,
+      details: 'Check Vercel logs for more information'
+    });
+  }
+});
+
 // Generate unique reservation ID
 function generateReservationId() {
   const timestamp = Date.now().toString(36);
