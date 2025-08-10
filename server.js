@@ -182,12 +182,37 @@ app.post('/api/reservations', async (req, res) => {
       });
       console.log('✅ Notion database connection successful');
       console.log('Database title:', database.title[0]?.plain_text || 'Unknown');
+      console.log('Available properties:', Object.keys(database.properties));
+      
+      // Check if required properties exist
+      const requiredProperties = ['Guest Name', 'Reservation Date', 'Reservation Time', 'Check-in Status', 'QR Code', 'Guest Email', 'Guest Phone', 'Special Requests'];
+      const availableProperties = Object.keys(database.properties);
+      
+      console.log('Checking required properties...');
+      for (const prop of requiredProperties) {
+        if (availableProperties.includes(prop)) {
+          console.log(`✅ Property "${prop}" exists`);
+        } else {
+          console.log(`❌ Property "${prop}" MISSING`);
+        }
+      }
+      
     } catch (notionError) {
       console.error('❌ Notion database connection failed:', notionError);
       throw new Error(`Notion database connection failed: ${notionError.message}`);
     }
     
     console.log('🔧 Creating Notion page...');
+    console.log('Page properties to create:', {
+      'Guest Name': guestName,
+      'Reservation Date': reservationDate,
+      'Reservation Time': reservationTime,
+      'Check-in Status': 'Pending',
+      'QR Code': qrCodeUrl,
+      'Guest Email': guestEmail || '',
+      'Guest Phone': guestPhone || '',
+      'Special Requests': specialRequests || ''
+    });
     // Create Notion page
     const notionPage = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
