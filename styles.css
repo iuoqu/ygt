@@ -138,7 +138,7 @@ p { color: var(--cafe-muted); }
 /* Hero background with image overlay */
 .hero.has-image {
     background: linear-gradient( to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.15) ),
-                url('images/hero.jpg') center/cover no-repeat;
+                url('images/hero.JPG') center/cover no-repeat;
 }
 .hero.has-image .hero-title,
 .hero.has-image .hero-subtitle {
