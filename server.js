@@ -141,9 +141,54 @@ app.post('/api/reservations', async (req, res) => {
 
   } catch (error) {
     console.error('Reservation creation error:', error);
+    console.error('Environment variables check:');
+    console.error('NOTION_API_KEY exists:', !!process.env.NOTION_API_KEY);
+    console.error('NOTION_DATABASE_ID exists:', !!process.env.NOTION_DATABASE_ID);
+    console.error('NOTION_DATABASE_ID value:', process.env.NOTION_DATABASE_ID);
+    
     res.status(500).json({
       error: 'Failed to create reservation',
-      details: error.message
+      details: error.message,
+      debug: {
+        hasApiKey: !!process.env.NOTION_API_KEY,
+        hasDatabaseId: !!process.env.NOTION_DATABASE_ID,
+        databaseId: process.env.NOTION_DATABASE_ID
+      }
+    });
+  }
+});
+
+// Test Notion API endpoint
+app.get('/api/test-notion', async (req, res) => {
+  try {
+    console.log('Testing Notion API...');
+    console.log('API Key exists:', !!process.env.NOTION_API_KEY);
+    console.log('Database ID exists:', !!process.env.NOTION_DATABASE_ID);
+    console.log('Database ID:', process.env.NOTION_DATABASE_ID);
+    
+    const database = await notion.databases.retrieve({
+      database_id: process.env.NOTION_DATABASE_ID
+    });
+    
+    res.json({
+      success: true,
+      message: 'Notion API is working!',
+      database: {
+        id: database.id,
+        title: database.title[0]?.plain_text || 'Untitled',
+        properties: Object.keys(database.properties)
+      }
+    });
+  } catch (error) {
+    console.error('Notion API test error:', error);
+    res.status(500).json({
+      error: 'Notion API test failed',
+      details: error.message,
+      debug: {
+        hasApiKey: !!process.env.NOTION_API_KEY,
+        hasDatabaseId: !!process.env.NOTION_DATABASE_ID,
+        databaseId: process.env.NOTION_DATABASE_ID
+      }
     });
   }
 });
