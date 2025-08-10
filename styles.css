@@ -470,6 +470,20 @@ section:nth-child(even) {
     color: rgba(255, 255, 255, 0.9);
 }
 
+.booking-promo {
+    background: linear-gradient(135deg, #D6C6B9, #F5F3EF);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    border-left: 4px solid var(--accent);
+}
+
+.booking-promo p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
 .booking-price {
     margin-bottom: 2rem;
     font-size: 1.2rem;
