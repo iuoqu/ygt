@@ -46,6 +46,13 @@ function generateReservationId() {
 // Create reservation endpoint
 app.post('/api/reservations', async (req, res) => {
   try {
+    console.log('=== RESERVATION REQUEST START ===');
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    console.log('Environment variables check:');
+    console.log('- NOTION_API_KEY exists:', !!process.env.NOTION_API_KEY);
+    console.log('- NOTION_DATABASE_ID exists:', !!process.env.NOTION_DATABASE_ID);
+    console.log('- NOTION_DATABASE_ID value:', process.env.NOTION_DATABASE_ID);
+    
     const {
       guestName,
       reservationDate,
@@ -57,19 +64,27 @@ app.post('/api/reservations', async (req, res) => {
 
     // Validate required fields
     if (!guestName || !reservationDate || !reservationTime) {
+      console.log('❌ Validation failed - missing required fields');
       return res.status(400).json({
         error: 'Guest Name, Reservation Date, and Reservation Time are required'
       });
     }
 
+    console.log('✅ Validation passed');
+    console.log('🔧 Generating reservation ID...');
+    
     // Generate unique reservation ID
     const reservationId = generateReservationId();
+    console.log('✅ Generated reservation ID:', reservationId);
     
     // Create check-in URL
     const checkInUrl = isProduction 
       ? `https://${req.get('host')}/checkin/${reservationId}`
       : `${req.protocol}://${req.get('host')}/checkin/${reservationId}`;
     
+    console.log('✅ Check-in URL:', checkInUrl);
+    
+    console.log('🔧 Generating QR code...');
     // Generate QR code
     const qrCodeBuffer = await QRCode.toBuffer(checkInUrl, {
       type: 'png',
@@ -81,6 +96,9 @@ app.post('/api/reservations', async (req, res) => {
       }
     });
 
+    console.log('✅ QR code generated');
+    console.log('🔧 Saving QR code to file...');
+    
     // Save QR code to file
     const qrFileName = `qr-${reservationId}.png`;
     const qrFilePath = path.join(uploadsDir, qrFileName);
@@ -91,6 +109,22 @@ app.post('/api/reservations', async (req, res) => {
       ? `https://${req.get('host')}/uploads/${qrFileName}`
       : `${req.protocol}://${req.get('host')}/uploads/${qrFileName}`;
 
+    console.log('✅ QR code saved, URL:', qrCodeUrl);
+    console.log('🔧 Testing Notion connection...');
+    
+    // Test Notion connection first
+    try {
+      const database = await notion.databases.retrieve({
+        database_id: process.env.NOTION_DATABASE_ID
+      });
+      console.log('✅ Notion database connection successful');
+      console.log('Database title:', database.title[0]?.plain_text || 'Unknown');
+    } catch (notionError) {
+      console.error('❌ Notion database connection failed:', notionError);
+      throw new Error(`Notion database connection failed: ${notionError.message}`);
+    }
+    
+    console.log('🔧 Creating Notion page...');
     // Create Notion page
     const notionPage = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
@@ -122,6 +156,10 @@ app.post('/api/reservations', async (req, res) => {
       }
     });
 
+    console.log('✅ Notion page created successfully!');
+    console.log('Page ID:', notionPage.id);
+    console.log('=== RESERVATION REQUEST SUCCESS ===');
+    
     // Return success response
     res.json({
       success: true,
@@ -140,10 +178,20 @@ app.post('/api/reservations', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Reservation creation error:', error);
+    console.error('=== RESERVATION REQUEST FAILED ===');
+    console.error('❌ Error creating reservation:', error);
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      status: error.status,
+      body: error.body,
+      stack: error.stack
+    });
+    
     res.status(500).json({
       error: 'Failed to create reservation',
-      details: error.message
+      details: error.message,
+      code: error.code || 'UNKNOWN'
     });
   }
 });
