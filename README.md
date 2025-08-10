@@ -1,185 +1,169 @@
-# Yu Garden Tea - Website
+# Yu Garden Tea - Website & Reservation System
 
-A beautiful, customer-friendly, and SEO-optimized website for Yu Garden Tea, an authentic Chinese tea shop located near Yu Garden in Shanghai.
+A complete website and reservation system for Yu Garden Tea, featuring SEO optimization, QR code generation, and Notion integration.
 
-## 🌟 Features
+## Features
 
-### Customer-Friendly Features
-- **Mobile-first responsive design** - Works perfectly on all devices
-- **Fast loading** - Optimized for quick page loads
-- **Easy navigation** - Clear menu structure and smooth scrolling
-- **Special offer integration** - QR code and promotional content
-- **Booking system** - Easy tea tasting reservations
-- **Contact information** - Multiple ways to reach the business
-- **Photo gallery** - Showcase the tea shop and products
-- **Customer reviews** - Social proof from satisfied travelers
+### Website (Static)
+- **SEO Optimized**: Meta tags, Open Graph, Twitter Cards, structured data
+- **Responsive Design**: Mobile-first approach with modern UI
+- **Interactive Elements**: Monthly rotating QR codes, Google Maps integration
+- **Coupon System**: Personalized coupon generation with QR codes
 
-### SEO-Optimized Features
-- **Semantic HTML structure** - Proper heading hierarchy and landmarks
-- **Meta tags** - Comprehensive meta descriptions and keywords
-- **Open Graph tags** - Optimized for social media sharing
-- **Structured data** - Ready for rich snippets
-- **Fast performance** - Optimized images and code
-- **Mobile-friendly** - Google's mobile-first indexing
-- **Local SEO** - Address, hours, and location information
-- **Internal linking** - Strategic navigation structure
+### Reservation System (Node.js/Express)
+- **Form Handling**: Complete reservation form with validation
+- **QR Code Generation**: Automatic QR code creation for check-in
+- **Notion Integration**: Stores all reservations in Notion database
+- **Check-in System**: Unique URLs for guest check-in
 
-## 📁 File Structure
+## Project Structure
 
 ```
 ygt2/
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles
-├── script.js           # JavaScript functionality
-├── README.md           # This file
-└── images/             # Image directory (to be added)
-    ├── qr-code.png
-    ├── wechat-qr.png
-    ├── shop-interior.jpg
-    ├── tea-tasting.jpg
-    ├── tea-sets.jpg
-    ├── gift-boxes.jpg
-    ├── cultural-decor.jpg
-    └── tea-ceremony.jpg
+├── index.html              # Main website
+├── styles.css              # Website styling
+├── script.js               # Website JavaScript
+├── coupon.html             # Coupon generation page
+├── server.js               # Express server (reservation system)
+├── package.json            # Node.js dependencies
+├── public/
+│   ├── index.html          # Reservation form
+│   └── uploads/            # Generated QR codes
+├── api/
+│   └── log-coupon-notion.js # Notion API for coupons
+├── sitemap.xml             # SEO sitemap
+├── robots.txt              # SEO robots file
+├── .htaccess               # Server configuration
+└── env.example             # Environment variables template
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
-1. **Download or clone** the website files
-2. **Add images** to the `images/` folder (see image requirements below)
-3. **Customize content** in `index.html`:
-   - Update the address in the location section
-   - Add your actual WeChat QR code
-   - Update contact information
-   - Add real photos of your shop
-4. **Upload to your web server** or hosting platform
-5. **Test the website** on different devices and browsers
+### Website (Static)
+1. Open `index.html` in a web browser
+2. Add your images to the `images/` folder
+3. Deploy to any static hosting service
 
-## 🖼️ Image Requirements
+### Reservation System
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### Required Images
-- **qr-code.png** (150x150px) - Special offer QR code
-- **wechat-qr.png** (80x80px) - WeChat QR code
-- **shop-interior.jpg** (600x400px) - Interior of the tea shop
-- **tea-tasting.jpg** (600x400px) - Tea tasting experience
-- **tea-sets.jpg** (600x400px) - Traditional tea sets
-- **gift-boxes.jpg** (600x400px) - Tea gift boxes
-- **cultural-decor.jpg** (600x400px) - Chinese cultural decorations
-- **tea-ceremony.jpg** (600x400px) - Traditional tea ceremony
+2. Set up environment variables:
+   ```bash
+   cp env.example .env
+   # Edit .env with your Notion API credentials
+   ```
 
-### Image Optimization Tips
-- Use **JPEG format** for photos (quality 80-85%)
-- Use **PNG format** for QR codes and graphics
-- Keep file sizes under **200KB** each
-- Use descriptive **alt text** for accessibility
-- Optimize for **web display** (72 DPI)
+3. Start the server:
+   ```bash
+   npm start
+   # or for development: npm run dev
+   ```
 
-## 🎨 Customization
+4. Visit `http://localhost:3000` to access the reservation form
+
+## Notion Database Setup
+
+Create a Notion database with these properties:
+- **Guest Name** (title)
+- **Reservation Date** (date)
+- **Reservation Time** (rich_text)
+- **Check-in Status** (select: Pending, Checked-in, Cancelled)
+- **QR Code** (url)
+- **Guest Email** (email)
+- **Guest Phone** (phone_number)
+- **Special Requests** (rich_text)
+
+## Environment Variables
+
+Create a `.env` file with:
+```
+NOTION_API_KEY=your_notion_integration_token
+NOTION_DATABASE_ID=your_notion_database_id
+PORT=3000
+```
+
+## Image Requirements
+
+Add these images to the `images/` folder:
+- `hero.jpg` - Main hero image (1200x800px)
+- `specialoffer.jpg` - Special offer image (400x300px)
+- `about.jpg` - About section image (600x400px)
+- `location.jpg` - Location image (600x400px)
+
+## Customization
 
 ### Colors
-The website uses a warm tea-themed color palette:
-- Primary: `#8B4513` (Saddle Brown)
-- Secondary: `#D2691E` (Chocolate)
-- Accent: `#FFD700` (Gold)
-- Background: `#FFF8F0` (Warm White)
+The website uses a tea-themed color palette:
+- Primary: `#5A3E2B` (Tea Brown)
+- Secondary: `#D6C6B9` (Tea Beige)
+- Background: `#F5F3EF` (Tea Cream)
 
 ### Fonts
-- **Inter** - Modern, readable sans-serif for body text
-- **Noto Serif SC** - Chinese serif font for cultural elements
+- Headings: Playfair Display (Google Fonts)
+- Body: Inter (Google Fonts)
 
-### Content Updates
-1. **Address**: Update the placeholder in the location section
-2. **Hours**: Modify opening hours if needed
-3. **Contact**: Update email, social media links
-4. **Pricing**: Adjust tea tasting prices
-5. **Reviews**: Add real customer testimonials
+## Deployment
 
-## 📱 Mobile Optimization
+### Static Website
+- Deploy to Vercel, Netlify, or any static hosting
+- Upload images to the `images/` folder
+- Update business information in `index.html`
 
-The website is fully responsive and optimized for:
-- **Smartphones** (320px+)
-- **Tablets** (768px+)
-- **Desktop** (1024px+)
+### Reservation System
+- Deploy to Vercel, Railway, or any Node.js hosting
+- Set environment variables on your hosting platform
+- Ensure the `public/uploads/` directory is writable
 
-### Mobile Features
-- Touch-friendly navigation
-- Optimized image loading
-- Fast scrolling performance
-- Readable text sizes
-- Easy-to-tap buttons
+## API Endpoints
 
-## 🔍 SEO Features
+### POST /api/reservations
+Creates a new reservation and generates QR code.
 
-### Technical SEO
-- **Semantic HTML5** structure
-- **Meta tags** for search engines
-- **Open Graph** for social sharing
-- **Structured data** markup
-- **Fast loading** times
-- **Mobile-first** design
+**Request Body:**
+```json
+{
+  "guestName": "John Doe",
+  "reservationDate": "2024-01-15",
+  "reservationTime": "14:00",
+  "guestEmail": "john@example.com",
+  "guestPhone": "+1234567890",
+  "specialRequests": "Vegetarian options"
+}
+```
 
-### Content SEO
-- **Local keywords** (Yu Garden, Shanghai, Chinese tea)
-- **Long-tail keywords** (tea tasting, authentic Chinese tea)
-- **Location-based** content
-- **Customer-focused** language
-- **Call-to-action** buttons
+**Response:**
+```json
+{
+  "success": true,
+  "reservation": {
+    "id": "YGT-1234567890-ABC123",
+    "guestName": "John Doe",
+    "reservationDate": "2024-01-15",
+    "reservationTime": "14:00",
+    "qrCodeUrl": "http://localhost:3000/uploads/qr-YGT-1234567890-ABC123.png",
+    "checkInUrl": "http://localhost:3000/checkin/YGT-1234567890-ABC123"
+  }
+}
+```
 
-### Local SEO
-- **Business address** and hours
-- **Google Maps** integration ready
-- **Local phone number**
-- **Area-specific** keywords
-- **Tourist-focused** content
+### GET /checkin/:reservationId
+Displays check-in page for a specific reservation.
 
-## 📊 Analytics Integration
+## SEO Features
 
-The website includes placeholder analytics tracking for:
-- Page views
-- Button clicks
-- Scroll depth
-- User interactions
+- Meta tags for search engines
+- Open Graph tags for social media
+- Twitter Card tags
+- JSON-LD structured data
+- XML sitemap
+- Robots.txt
+- Canonical URLs
+- Image optimization attributes
 
-To enable real analytics:
-1. Add Google Analytics tracking code
-2. Set up Google Search Console
-3. Configure conversion tracking
-4. Monitor user behavior
+## License
 
-## 🛠️ Technical Details
-
-### Browser Support
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-### Performance
-- **Lighthouse Score**: 90+ (estimated)
-- **PageSpeed Insights**: 90+ (estimated)
-- **Mobile-friendly**: Yes
-- **Accessibility**: WCAG 2.1 compliant
-
-### Security
-- HTTPS ready
-- XSS protection
-- CSRF protection
-- Content Security Policy ready
-
-## 📞 Support
-
-For technical support or customization requests:
-- **Email**: [Your contact email]
-- **Documentation**: This README file
-- **Updates**: Check for regular updates
-
-## 📄 License
-
-This website template is created for Yu Garden Tea. All rights reserved.
-
----
-
-**Yu Garden Tea** - Authentic Chinese Tea Experience in the Heart of Old Shanghai
-
-📍 Just 3 minutes from Yu Garden | English-Friendly | Tea Tasting & Gifts
+MIT License - feel free to use and modify for your tea business!
 

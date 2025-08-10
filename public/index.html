@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Tea Experience - Yu Garden Tea</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --tea-brown: #5A3E2B;
+      --tea-beige: #D6C6B9;
+      --tea-cream: #F5F3EF;
+      --text: #2b2b2b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--tea-cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--tea-brown);
+      margin-bottom: 1rem;
+    }
+    .form-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--tea-brown);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #eae7e3;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--tea-brown);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    .required { color: #e74c3c; }
+    .btn {
+      background: var(--tea-brown);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .btn:hover { background: #4a3423; }
+    .btn:disabled { background: #ccc; cursor: not-allowed; }
+    .success-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      display: none;
+    }
+    .success-card.show { display: block; }
+    .qr-code {
+      margin: 2rem 0;
+      padding: 1rem;
+      background: var(--tea-cream);
+      border-radius: 10px;
+    }
+    .qr-code img {
+      max-width: 300px;
+      height: auto;
+      border-radius: 8px;
+    }
+    .reservation-details {
+      background: var(--tea-beige);
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(90, 62, 43, 0.1);
+    }
+    .detail-label {
+      font-weight: 600;
+      color: var(--tea-brown);
+    }
+    .error-message {
+      background: #fee;
+      color: #c33;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      border: 1px solid #fcc;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    .spinner {
+      border: 3px solid #eae7e3;
+      border-top: 3px solid var(--tea-brown);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @media (max-width: 768px) {
+      .form-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Book Your Tea Experience</h1>
+      <p>Reserve your private tea tasting session at Yu Garden Tea</p>
+    </div>
+
+    <div class="form-card" id="reservationForm">
+      <form id="bookingForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="guestName">Guest Name <span class="required">*</span></label>
+            <input type="text" id="guestName" name="guestName" required>
+          </div>
+          <div class="form-group">
+            <label for="reservationDate">Reservation Date <span class="required">*</span></label>
+            <input type="date" id="reservationDate" name="reservationDate" required>
+          </div>
+          <div class="form-group">
+            <label for="reservationTime">Reservation Time <span class="required">*</span></label>
+            <select id="reservationTime" name="reservationTime" required>
+              <option value="">Select a time</option>
+              <option value="10:00">10:00 AM</option>
+              <option value="11:00">11:00 AM</option>
+              <option value="12:00">12:00 PM</option>
+              <option value="13:00">1:00 PM</option>
+              <option value="14:00">2:00 PM</option>
+              <option value="15:00">3:00 PM</option>
+              <option value="16:00">4:00 PM</option>
+              <option value="17:00">5:00 PM</option>
+              <option value="18:00">6:00 PM</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guestEmail">Guest Email</label>
+            <input type="email" id="guestEmail" name="guestEmail">
+          </div>
+          <div class="form-group">
+            <label for="guestPhone">Guest Phone</label>
+            <input type="tel" id="guestPhone" name="guestPhone">
+          </div>
+          <div class="form-group full-width">
+            <label for="specialRequests">Special Requests</label>
+            <textarea id="specialRequests" name="specialRequests" placeholder="Any dietary restrictions, accessibility needs, or special requests..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Book Your Tea Experience</button>
+      </form>
+
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Creating your reservation...</p>
+      </div>
+      <div class="error-message" id="errorMessage" style="display: none;"></div>
+    </div>
+
+    <div class="success-card" id="successCard">
+      <h2 style="color: var(--tea-brown); margin-bottom: 1rem;">Reservation Confirmed!</h2>
+      <p>Thank you for booking your tea experience. Your reservation details are below:</p>
+      
+      <div class="reservation-details" id="reservationDetails"></div>
+
+      <div class="qr-code">
+        <h3>Your Check-in QR Code</h3>
+        <p>Show this QR code to our staff when you arrive:</p>
+        <img id="qrCodeImage" alt="Check-in QR Code">
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+          You can also access your check-in page directly: <br>
+          <a href="#" id="checkInLink" style="color: var(--tea-brown); text-decoration: underline;">Check-in Link</a>
+        </p>
+      </div>
+
+      <button class="btn" onclick="window.print()">Print Reservation</button>
+      <button class="btn" onclick="location.reload()" style="margin-top: 1rem; background: var(--tea-beige); color: var(--tea-brown);">Book Another Reservation</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('bookingForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const loading = document.getElementById('loading');
+      const errorMessage = document.getElementById('errorMessage');
+      const successCard = document.getElementById('successCard');
+      const reservationForm = document.getElementById('reservationForm');
+
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('reservationDate').min = today;
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        submitBtn.disabled = true;
+        loading.style.display = 'block';
+        errorMessage.style.display = 'none';
+
+        const formData = new FormData(form);
+        const reservationData = {
+          guestName: formData.get('guestName'),
+          reservationDate: formData.get('reservationDate'),
+          reservationTime: formData.get('reservationTime'),
+          guestEmail: formData.get('guestEmail'),
+          guestPhone: formData.get('guestPhone'),
+          specialRequests: formData.get('specialRequests')
+        };
+
+        try {
+          const response = await fetch('/api/reservations', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reservationData)
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            displayReservationSuccess(result.reservation);
+            reservationForm.style.display = 'none';
+            successCard.classList.add('show');
+          } else {
+            throw new Error(result.error || 'Failed to create reservation');
+          }
+
+        } catch (error) {
+          console.error('Error:', error);
+          errorMessage.textContent = error.message || 'An error occurred while creating your reservation. Please try again.';
+          errorMessage.style.display = 'block';
+        } finally {
+          submitBtn.disabled = false;
+          loading.style.display = 'none';
+        }
+      });
+
+      function displayReservationSuccess(reservation) {
+        const detailsContainer = document.getElementById('reservationDetails');
+        detailsContainer.innerHTML = `
+          <h3>Reservation Information</h3>
+          <div class="detail-row">
+            <span class="detail-label">Reservation ID:</span>
+            <span>${reservation.id}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Guest Name:</span>
+            <span>${reservation.guestName}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span>${new Date(reservation.reservationDate).toLocaleDateString()}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Time:</span>
+            <span>${reservation.reservationTime}</span>
+          </div>
+          ${reservation.guestEmail ? `
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span>${reservation.guestEmail}</span>
+          </div>
+          ` : ''}
+          ${reservation.guestPhone ? `
+          <div class="detail-row">
+            <span class="detail-label">Phone:</span>
+            <span>${reservation.guestPhone}</span>
+          </div>
+          ` : ''}
+          ${reservation.specialRequests ? `
+          <div class="detail-row">
+            <span class="detail-label">Special Requests:</span>
+            <span>${reservation.specialRequests}</span>
+          </div>
+          ` : ''}
+        `;
+
+        document.getElementById('qrCodeImage').src = reservation.qrCodeUrl;
+        
+        const checkInLink = document.getElementById('checkInLink');
+        checkInLink.href = reservation.checkInUrl;
+        checkInLink.textContent = reservation.checkInUrl;
+      }
+    });
+  </script>
+</body>
+</html>
