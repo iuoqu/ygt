@@ -17,6 +17,7 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+app.use(express.static('.')); // Serve files from root directory (CSS, JS, images)
 
 // Ensure public/uploads directory exists
 const uploadsDir = path.join(__dirname, 'public', 'uploads');
@@ -190,8 +191,13 @@ app.get('/checkin/:reservationId', (req, res) => {
   `);
 });
 
-// Serve the main reservation form
+// Serve the main Yu Garden Tea website
 app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Serve the reservation form at /reserve
+app.get('/reserve', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
