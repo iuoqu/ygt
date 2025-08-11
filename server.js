@@ -45,6 +45,20 @@ app.get('/api/test', (req, res) => {
   });
 });
 
+// Test POST endpoint
+app.post('/api/test-post', (req, res) => {
+  console.log('=== TEST POST REQUEST ===');
+  console.log('Request body:', JSON.stringify(req.body, null, 2));
+  console.log('Headers:', req.headers);
+  
+  res.json({
+    success: true,
+    message: 'POST request received successfully',
+    receivedData: req.body,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Test Notion API endpoint
 app.get('/api/test-notion', async (req, res) => {
   try {
@@ -169,19 +183,12 @@ app.post('/api/reservations', async (req, res) => {
     });
 
     console.log('✅ QR code generated');
-    console.log('🔧 Saving QR code to file...');
+    console.log('🔧 Skipping QR code file save (using URL directly)...');
     
-    // Save QR code to file
-    const qrFileName = `qr-${reservationId}.png`;
-    const qrFilePath = path.join(uploadsDir, qrFileName);
-    fs.writeFileSync(qrFilePath, qrCodeBuffer);
-    
-    // QR code URL for Notion
-    const qrCodeUrl = isProduction 
-      ? `https://${req.get('host')}/uploads/${qrFileName}`
-      : `${req.protocol}://${req.get('host')}/uploads/${qrFileName}`;
+    // Use check-in URL directly instead of saving QR file
+    const qrCodeUrl = checkInUrl;
 
-    console.log('✅ QR code saved, URL:', qrCodeUrl);
+    console.log('✅ Using check-in URL as QR code URL:', qrCodeUrl);
     console.log('🔧 Testing Notion connection...');
     
     // Test Notion connection first
