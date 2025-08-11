@@ -26,17 +26,6 @@
       "use": "@vercel/node"
     }
   ],
-  "functions": {
-    "api/hello.js": {
-      "maxDuration": 10
-    },
-    "api/test.js": {
-      "maxDuration": 10
-    },
-    "api/simple-reservation.js": {
-      "maxDuration": 30
-    }
-  },
   "routes": [
     {
       "src": "/reserve",
