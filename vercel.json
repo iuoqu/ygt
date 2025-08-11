@@ -22,7 +22,23 @@
       "use": "@vercel/static"
     },
     {
-      "src": "api/**/*.js",
+      "src": "api/simple-reservation.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/hello.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/test.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/reservations.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/log-coupon-notion.js",
       "use": "@vercel/node"
     }
   ],
