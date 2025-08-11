@@ -275,7 +275,7 @@
         };
 
         try {
-          const response = await fetch('/api/reservations', {
+          const response = await fetch('/api/simple-reservation', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(reservationData)
@@ -341,11 +341,8 @@
           ` : ''}
         `;
 
-        document.getElementById('qrCodeImage').src = reservation.qrCodeUrl;
-        
-        const checkInLink = document.getElementById('checkInLink');
-        checkInLink.href = reservation.checkInUrl;
-        checkInLink.textContent = reservation.checkInUrl;
+        // Hide QR code section since we're not generating QR codes in simple version
+        document.querySelector('.qr-code').style.display = 'none';
       }
     });
   </script>

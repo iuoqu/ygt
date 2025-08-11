@@ -64,10 +64,10 @@ module.exports = async (req, res) => {
           url: 'https://example.com/checkin'
         },
         'Guest Email': {
-          email: guestEmail || ''
+          email: guestEmail || null
         },
         'Guest Phone': {
-          phone_number: guestPhone || ''
+          phone_number: guestPhone || null
         },
         'Special Requests': {
           rich_text: [{ text: { content: specialRequests || '' } }]
