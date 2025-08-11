@@ -1,79 +1,59 @@
 const https = require('https');
 
-// Test the simple endpoint first
-const testSimple = () => {
-  return new Promise((resolve, reject) => {
-    const req = https.request({
-      hostname: 'ygt2-h428q5s6s-tb2.vercel.app',
-      port: 443,
-      path: '/api/test',
-      method: 'GET',
-      timeout: 10000
-    }, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          resolve({ status: res.statusCode, data: json });
-        } catch (e) {
-          resolve({ status: res.statusCode, data: data });
-        }
-      });
-    });
-
-    req.on('error', reject);
-    req.on('timeout', () => reject(new Error('Request timeout')));
-    req.end();
-  });
+const testData = {
+  guestName: 'Test User',
+  reservationDate: '2024-08-15',
+  reservationTime: '14:00',
+  guestEmail: 'test@example.com',
+  guestPhone: '+1234567890',
+  specialRequests: 'Test reservation'
 };
 
-// Test the Notion endpoint
-const testNotion = () => {
-  return new Promise((resolve, reject) => {
-    const req = https.request({
-      hostname: 'ygt2-h428q5s6s-tb2.vercel.app',
-      port: 443,
-      path: '/api/test-notion',
-      method: 'GET',
-      timeout: 10000
-    }, (res) => {
-      let data = '';
-      res.on('data', (chunk) => data += chunk);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          resolve({ status: res.statusCode, data: json });
-        } catch (e) {
-          resolve({ status: res.statusCode, data: data });
-        }
-      });
-    });
+const postData = JSON.stringify(testData);
 
-    req.on('error', reject);
-    req.on('timeout', () => reject(new Error('Request timeout')));
-    req.end();
-  });
+const options = {
+  hostname: 'ygt2-cpogbgf25-tb2.vercel.app',
+  port: 443,
+  path: '/api/simple-reservation',
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(postData)
+  },
+  timeout: 30000
 };
 
-async function runTests() {
-  console.log('🔧 Testing basic server functionality...');
-  
-  try {
-    const simpleResult = await testSimple();
-    console.log('✅ Simple test result:', simpleResult);
-  } catch (error) {
-    console.log('❌ Simple test failed:', error.message);
-  }
+console.log('🔧 Testing simple reservation endpoint...');
+console.log('URL:', `https://${options.hostname}${options.path}`);
+console.log('Data:', testData);
 
-  console.log('\n🔧 Testing Notion API...');
-  
-  try {
-    const notionResult = await testNotion();
-    console.log('✅ Notion test result:', notionResult);
-  } catch (error) {
-    console.log('❌ Notion test failed:', error.message);
-  }
-}
+const req = https.request(options, (res) => {
+  console.log(`📡 Status: ${res.statusCode}`);
+  console.log(`📡 Headers:`, res.headers);
 
-runTests();
+  let data = '';
+  res.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  res.on('end', () => {
+    console.log('📡 Response Body:');
+    try {
+      const jsonResponse = JSON.parse(data);
+      console.log(JSON.stringify(jsonResponse, null, 2));
+    } catch (e) {
+      console.log('Raw response:', data);
+    }
+  });
+});
+
+req.on('error', (e) => {
+  console.error('❌ Request error:', e.message);
+});
+
+req.on('timeout', () => {
+  console.error('❌ Request timeout');
+});
+
+req.write(postData);
+req.end();

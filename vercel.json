@@ -7,7 +7,7 @@
     "api/test.js": {
       "maxDuration": 10
     },
-    "api/reservations.js": {
+    "api/simple-reservation.js": {
       "maxDuration": 30
     }
   }
