@@ -1,33 +1,15 @@
 {
   "version": 2,
-  "functions": {
-    "api/test.js": {
-      "maxDuration": 10
-    },
-    "api/reservations.js": {
-      "maxDuration": 30
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
     {
-      "src": "/api/test",
-      "dest": "/api/test.js"
-    },
-    {
-      "src": "/api/reservations",
-      "dest": "/api/reservations.js"
-    },
-    {
-      "src": "/reserve",
-      "dest": "/public/index.html"
-    },
-    {
-      "src": "/images/(.*)",
-      "dest": "/images/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/server.js"
     }
   ]
 }
