@@ -12,7 +12,7 @@ const testData = {
 const postData = JSON.stringify(testData);
 
 const options = {
-  hostname: 'ygt2-r83j5vctx-tb2.vercel.app',
+  hostname: 'ygt2-q476n7ni1-tb2.vercel.app',
   port: 443,
   path: '/api/reservations',
   method: 'POST',

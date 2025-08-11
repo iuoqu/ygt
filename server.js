@@ -358,7 +358,13 @@ app.get('/reserve', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Yu Garden Tea Reservation Server running on port ${PORT}`);
-  console.log(`Visit http://localhost:${PORT} to make a reservation`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`🚀 Server starting...`);
+  console.log(`📡 Yu Garden Tea Reservation Server running on port ${port}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🏭 Production mode: ${isProduction}`);
+  console.log(`🔑 Notion API Key exists: ${!!process.env.NOTION_API_KEY}`);
+  console.log(`🗄️ Notion Database ID exists: ${!!process.env.NOTION_DATABASE_ID}`);
+  console.log(`✅ Server ready to accept requests!`);
 });
