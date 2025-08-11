@@ -4,7 +4,7 @@ const https = require('https');
 const testSimple = () => {
   return new Promise((resolve, reject) => {
     const req = https.request({
-      hostname: 'ygt2-q476n7ni1-tb2.vercel.app',
+      hostname: 'ygt2-h428q5s6s-tb2.vercel.app',
       port: 443,
       path: '/api/test',
       method: 'GET',
@@ -32,7 +32,7 @@ const testSimple = () => {
 const testNotion = () => {
   return new Promise((resolve, reject) => {
     const req = https.request({
-      hostname: 'ygt2-q476n7ni1-tb2.vercel.app',
+      hostname: 'ygt2-h428q5s6s-tb2.vercel.app',
       port: 443,
       path: '/api/test-notion',
       method: 'GET',
