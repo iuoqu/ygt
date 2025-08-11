@@ -1,7 +1,4 @@
 const { Client } = require('@notionhq/client');
-const QRCode = require('qrcode');
-const fs = require('fs');
-const path = require('path');
 
 // Initialize Notion client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
@@ -66,19 +63,6 @@ module.exports = async (req, res) => {
     const checkInUrl = `https://${req.headers.host}/checkin/${reservationId}`;
     console.log('✅ Check-in URL:', checkInUrl);
     
-    console.log('🔧 Generating QR code...');
-    // Generate QR code
-    const qrCodeBuffer = await QRCode.toBuffer(checkInUrl, {
-      type: 'png',
-      width: 300,
-      margin: 2,
-      color: {
-        dark: '#5A3E2B',
-        light: '#F5F3EF'
-      }
-    });
-
-    console.log('✅ QR code generated');
     console.log('🔧 Testing Notion connection...');
     
     // Test Notion connection first
@@ -89,19 +73,6 @@ module.exports = async (req, res) => {
       console.log('✅ Notion database connection successful');
       console.log('Database title:', database.title[0]?.plain_text || 'Unknown');
       console.log('Available properties:', Object.keys(database.properties));
-      
-      // Check if required properties exist
-      const requiredProperties = ['Guest Name', 'Reservation Date', 'Reservation Time', 'Check-in Status', 'QR Code', 'Guest Email', 'Guest Phone', 'Special Requests'];
-      const availableProperties = Object.keys(database.properties);
-      
-      console.log('Checking required properties...');
-      for (const prop of requiredProperties) {
-        if (availableProperties.includes(prop)) {
-          console.log(`✅ Property "${prop}" exists`);
-        } else {
-          console.log(`❌ Property "${prop}" MISSING`);
-        }
-      }
       
     } catch (notionError) {
       console.error('❌ Notion database connection failed:', notionError);
@@ -114,7 +85,7 @@ module.exports = async (req, res) => {
       'Reservation Date': reservationDate,
       'Reservation Time': reservationTime,
       'Check-in Status': 'Pending',
-      'QR Code': 'Generated QR code',
+      'QR Code': checkInUrl,
       'Guest Email': guestEmail || '',
       'Guest Phone': guestPhone || '',
       'Special Requests': specialRequests || ''
@@ -137,7 +108,7 @@ module.exports = async (req, res) => {
           select: { name: 'Pending' }
         },
         'QR Code': {
-          url: checkInUrl // Store the check-in URL instead of QR image URL
+          url: checkInUrl
         },
         'Guest Email': {
           email: guestEmail || ''
@@ -166,6 +137,7 @@ module.exports = async (req, res) => {
         guestEmail,
         guestPhone,
         specialRequests,
+        qrCodeUrl: checkInUrl, // Use check-in URL as QR code URL
         checkInUrl,
         notionPageId: notionPage.id
       }
