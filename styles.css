@@ -5,16 +5,15 @@
 }
 
 :root {
+    /* Legacy palette (still referenced in some places) */
     --primary: #8B4513;
     --secondary: #D2691E;
     --accent: #FFD700;
     --dark: #2C2C2C;
     --light: #FDFDFD;
     --warm: #FFF8F0;
-}
 
-/* --- Cafe-style aesthetic overrides (inspired by minimalist coffee shop sites) --- */
-:root {
+    /* Cafe-style theme (active) */
     --cafe-bg: #FAF8F5;
     --cafe-card: #FFFFFF;
     --cafe-border: #E7E2DC;
@@ -26,7 +25,6 @@
 body {
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
-    color: var(--dark);
     background: var(--cafe-bg);
     color: var(--cafe-text);
 }
@@ -53,7 +51,6 @@ p { color: var(--cafe-muted); }
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
-    border-bottom: 1px solid #E8E8E8;
     border-bottom: 1px solid var(--cafe-border);
 }
 
@@ -67,11 +64,18 @@ p { color: var(--cafe-muted); }
     height: 70px;
 }
 
-.logo h1 {
+.logo .logo-text {
     font-size: 1.5rem;
-    color: var(--primary);
+    color: var(--cafe-accent);
     margin: 0;
     font-weight: 700;
+    text-decoration: none;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    letter-spacing: 0.2px;
+}
+
+.logo .logo-text:hover {
+    color: var(--primary);
 }
 
 .nav-menu {
@@ -93,6 +97,10 @@ p { color: var(--cafe-muted); }
 
 .hamburger {
     display: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
 /* Hero */
@@ -103,7 +111,6 @@ p { color: var(--cafe-muted); }
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 120px 20px 80px;
     padding: 140px 20px 100px;
 }
 
@@ -209,7 +216,6 @@ p { color: var(--cafe-muted); }
 
 /* Sections */
 section {
-    padding: 80px 0;
     padding: 96px 0;
 }
 
@@ -224,15 +230,13 @@ section:nth-child(even) {
 }
 
 .offer-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--cafe-card);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 3rem;
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
 }
@@ -294,13 +298,11 @@ section:nth-child(even) {
     align-items: flex-start;
     gap: 1rem;
     padding: 1.5rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
     background: var(--cafe-card);
+    border-radius: 12px;
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
 }
 
 .location-item:hover {
@@ -327,16 +329,13 @@ section:nth-child(even) {
 }
 
 .experience-card {
-    background: white;
+    background: var(--cafe-card);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid #E8E8E8;
-    background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
 .experience-card:hover {
@@ -369,13 +368,11 @@ section:nth-child(even) {
 }
 
 .review-card {
-    background: white;
+    background: var(--cafe-card);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-left: 4px solid var(--primary);
-    background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
+    border-left: 4px solid var(--cafe-accent);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
 }
 
@@ -411,16 +408,13 @@ section:nth-child(even) {
 .gallery-item {
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
     background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
 }
 
 .gallery-item:hover {
-    transform: scale(1.02);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     transform: scale(1.01);
     box-shadow: 0 6px 20px rgba(0,0,0,0.10);
 }
@@ -438,15 +432,13 @@ section:nth-child(even) {
 }
 
 .booking-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--cafe-card);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 3rem;
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
 }
@@ -513,13 +505,11 @@ section:nth-child(even) {
     align-items: flex-start;
     gap: 1rem;
     padding: 1.5rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
     background: var(--cafe-card);
+    border-radius: 12px;
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
 }
 
 .contact-item:hover {
@@ -533,10 +523,9 @@ section:nth-child(even) {
 }
 
 .contact-item a {
-    color: var(--primary);
+    color: var(--cafe-accent);
     text-decoration: none;
     font-weight: 500;
-    color: var(--cafe-accent);
 }
 
 .contact-item a:hover {
@@ -564,16 +553,13 @@ section:nth-child(even) {
 }
 
 .product-item {
-    background: white;
+    background: var(--cafe-card);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: all 0.3s ease;
-    border: 1px solid #E8E8E8;
-    background: var(--cafe-card);
     border: 1px solid var(--cafe-border);
     box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: all 0.3s ease;
 }
 
 .product-item:hover {
@@ -616,10 +602,9 @@ section:nth-child(even) {
 
 /* Footer */
 .footer {
-    background: var(--dark);
+    background: #1E1E1E;
     color: white;
     padding: 60px 0 30px;
-    background: #1E1E1E;
 }
 
 .footer-content {
@@ -634,10 +619,9 @@ section:nth-child(even) {
 }
 
 .footer-content p {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255,255,255,0.75);
     margin-bottom: 2rem;
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.75);
 }
 
 .footer-links {
@@ -649,10 +633,9 @@ section:nth-child(even) {
 }
 
 .footer-links a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
     transition: all 0.3s ease;
-    color: var(--cafe-accent);
 }
 
 .footer-links a:hover {
@@ -679,33 +662,26 @@ section:nth-child(even) {
 }
 
 .btn-primary {
-    background: var(--accent);
-    color: var(--dark);
     background: var(--cafe-accent);
     color: #fff;
 }
 
 .btn-primary:hover {
-    background: #FFC800;
+    background: #4c3426;
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    background: #4c3426;
 }
 
 .btn-secondary {
     background: transparent;
-    color: var(--primary);
-    border: 2px solid var(--primary);
     color: var(--cafe-accent);
-    border-color: var(--cafe-accent);
+    border: 2px solid var(--cafe-accent);
 }
 
 .btn-secondary:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
     background: var(--cafe-accent);
     color: #fff;
+    transform: translateY(-2px);
 }
 
 /* Responsive */

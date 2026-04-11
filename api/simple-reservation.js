@@ -3,15 +3,32 @@ const { Client } = require('@notionhq/client');
 // Initialize Notion client
 const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
+// Allowed CORS origins (production + local dev). Override via env if needed.
+const ALLOWED_ORIGINS = [
+  'https://yugardentea.com',
+  'https://www.yugardentea.com',
+  'http://localhost:3000'
+];
+
+const isProduction = process.env.NODE_ENV === 'production';
+
+function devLog(...args) {
+  if (!isProduction) console.log(...args);
+}
+
 module.exports = async (req, res) => {
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  // Set CORS headers based on the request origin
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   // Handle preflight requests
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
+    res.status(204).end();
     return;
   }
 
@@ -21,9 +38,8 @@ module.exports = async (req, res) => {
   }
 
   try {
-    console.log('=== SIMPLE RESERVATION REQUEST START ===');
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
-    
+    devLog('Simple reservation request received');
+
     const {
       guestName,
       reservationDate,
@@ -31,31 +47,34 @@ module.exports = async (req, res) => {
       guestEmail,
       guestPhone,
       specialRequests
-    } = req.body;
+    } = req.body || {};
 
     // Validate required fields
     if (!guestName || !reservationDate || !reservationTime) {
-      console.log('❌ Validation failed - missing required fields');
       return res.status(400).json({
         error: 'Guest Name, Reservation Date, and Reservation Time are required'
       });
     }
 
-    console.log('✅ Validation passed');
-    console.log('🔧 Creating Notion page...');
+    // Basic length limits to prevent abuse
+    const trimmedName = String(guestName).slice(0, 100);
+    const trimmedTime = String(reservationTime).slice(0, 20);
+    const trimmedEmail = guestEmail ? String(guestEmail).slice(0, 200) : null;
+    const trimmedPhone = guestPhone ? String(guestPhone).slice(0, 30) : null;
+    const trimmedRequests = specialRequests ? String(specialRequests).slice(0, 1000) : '';
 
-    // Create Notion page - SIMPLE VERSION
+    // Create Notion page
     const notionPage = await notion.pages.create({
       parent: { database_id: process.env.NOTION_DATABASE_ID },
       properties: {
         'Guest Name': {
-          title: [{ text: { content: guestName } }]
+          title: [{ text: { content: trimmedName } }]
         },
         'Reservation Date': {
           date: { start: reservationDate }
         },
         'Reservation Time': {
-          rich_text: [{ text: { content: reservationTime } }]
+          rich_text: [{ text: { content: trimmedTime } }]
         },
         'Check-in Status': {
           select: { name: 'Pending' }
@@ -64,50 +83,41 @@ module.exports = async (req, res) => {
           url: 'https://example.com/checkin'
         },
         'Guest Email': {
-          email: guestEmail || null
+          email: trimmedEmail || null
         },
         'Guest Phone': {
-          phone_number: guestPhone || null
+          phone_number: trimmedPhone || null
         },
         'Special Requests': {
-          rich_text: [{ text: { content: specialRequests || '' } }]
+          rich_text: [{ text: { content: trimmedRequests } }]
         }
       }
     });
 
-    console.log('✅ Notion page created successfully!');
-    console.log('Page ID:', notionPage.id);
-    console.log('=== SIMPLE RESERVATION REQUEST SUCCESS ===');
-    
+    devLog('Notion page created:', notionPage.id);
+
     // Return success response
     res.json({
       success: true,
       message: 'Reservation created successfully!',
       reservation: {
-        guestName,
+        guestName: trimmedName,
         reservationDate,
-        reservationTime,
-        guestEmail,
-        guestPhone,
-        specialRequests,
+        reservationTime: trimmedTime,
+        guestEmail: trimmedEmail,
+        guestPhone: trimmedPhone,
+        specialRequests: trimmedRequests,
         notionPageId: notionPage.id
       }
     });
 
   } catch (error) {
-    console.error('=== SIMPLE RESERVATION REQUEST FAILED ===');
-    console.error('❌ Error creating reservation:', error);
-    console.error('Error details:', {
-      message: error.message,
-      code: error.code,
-      status: error.status,
-      body: error.body
-    });
-    
+    // Always log full error details server-side
+    console.error('Reservation creation failed:', error);
+
+    // Return generic error message to client (no internal details)
     res.status(500).json({
-      error: 'Failed to create reservation',
-      details: error.message,
-      code: error.code || 'UNKNOWN'
+      error: 'Failed to create reservation. Please try again later.'
     });
   }
 };

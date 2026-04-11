@@ -44,13 +44,21 @@
       "@type": "Store",
       "name": "Yu Garden Tea",
       "url": "https://yugardentea.com/",
+      "description": "Authentic Chinese tea shop near Yu Garden in Shanghai. English-friendly tea tasting, gifts, and cultural experience for travelers from around the world.",
       "image": ["https://yugardentea.com/images/hero.jpg"],
+      "email": "yugardentea@163.com",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "58-88 Lishui Road, Unit 237-239, Second Floor",
         "addressLocality": "Shanghai",
         "addressRegion": "Shanghai",
+        "postalCode": "200010",
         "addressCountry": "CN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 31.2276,
+        "longitude": 121.4920
       },
       "openingHoursSpecification": [{
         "@type": "OpeningHoursSpecification",
@@ -83,26 +91,27 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <nav class="nav">
+        <nav class="nav" aria-label="Main navigation">
             <div class="nav-container">
                 <div class="logo">
-                    <h1>Yu Garden Tea</h1>
+                    <a href="/" class="logo-text">Yu Garden Tea</a>
                 </div>
-                <ul class="nav-menu">
+                <ul class="nav-menu" id="nav-menu">
                     <li><a href="#about">About</a></li>
                     <li><a href="#experience">Experience</a></li>
                     <li><a href="#location">Location</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <div class="hamburger">
+                <button type="button" class="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
                     <span></span>
                     <span></span>
                     <span></span>
-                </div>
+                </button>
             </div>
         </nav>
     </header>
 
+    <main>
     <!-- Hero Section -->
     <section class="hero has-image">
         <div class="hero-content">
@@ -240,7 +249,7 @@
                 </div>
             </div>
             <div class="review-cta">
-                <a href="#" class="btn btn-secondary">Leave a review on Google or TripAdvisor</a>
+                <a href="https://maps.app.goo.gl/XFfx6ZUJuoPisech9" target="_blank" rel="noopener" class="btn btn-secondary">Leave a review on Google</a>
             </div>
         </div>
     </section>
@@ -317,19 +326,19 @@
                 <div class="contact-item">
                     <div>
                         <strong>Instagram:</strong><br>
-                        <a href="https://instagram.com/yugardentea" target="_blank">@yugardentea</a>
+                        <a href="https://instagram.com/yugardentea" target="_blank" rel="noopener">@yugardentea</a>
                     </div>
                 </div>
                 <div class="contact-item">
                     <div>
                         <strong>WeChat:</strong><br>
-                        <img src="images/wechat-qr.png" alt="WeChat QR Code" class="contact-qr">
+                        <span>Search "yugardentea" on WeChat</span>
                     </div>
                 </div>
                 <div class="contact-item">
                     <div>
                         <strong>TripAdvisor:</strong><br>
-                        <a href="#" target="_blank">Yu Garden Tea Shop</a>
+                        <a href="https://www.tripadvisor.com/" target="_blank" rel="noopener">Find us on TripAdvisor</a>
                     </div>
                 </div>
                 <div class="contact-item">
@@ -388,6 +397,8 @@
         </div>
     </section>
 
+    </main>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -400,14 +411,14 @@
                     <a href="#contact">Contact</a>
                 </div>
                 <div class="footer-copyright">
-                    <p>&copy; 2024 Yu Garden Tea. All rights reserved.</p>
+                    <p>&copy; <span id="copyright-year">2025</span> Yu Garden Tea. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
 
