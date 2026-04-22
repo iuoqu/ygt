@@ -1,55 +1,56 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "styles.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "script.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "images/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "reserve/index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "api/simple-reservation.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/hello.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/test.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/reservations.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/log-coupon-notion.js",
-      "use": "@vercel/node"
-    }
-  ],
+  "buildCommand": "echo 'Static site - no build needed'",
+  "outputDirectory": ".",
+  "installCommand": "echo 'Static site - no install needed'",
   "routes": [
-    {
-      "src": "/reserve",
-      "dest": "/reserve/index.html"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
+    { "src": "/coupon", "dest": "/coupon.html" },
+    { "src": "/coupon/", "dest": "/coupon.html" },
+    { "src": "/features", "dest": "/features.html" },
+    { "src": "/delivery", "dest": "/delivery.html" },
+    { "src": "/delivery/", "dest": "/delivery.html" },
+    { "src": "/reserve", "dest": "/reserve/index.html" },
+    { "src": "/fr", "dest": "/fr/index.html" },
+    { "src": "/fr/", "dest": "/fr/index.html" },
+    { "src": "/fr/reserve", "dest": "/fr/reserve/index.html" },
+    { "src": "/fr/reserve/", "dest": "/fr/reserve/index.html" },
+    { "src": "/fr/features", "dest": "/fr/features.html" },
+    { "src": "/fr/features/", "dest": "/fr/features.html" },
+    { "src": "/de", "dest": "/de/index.html" },
+    { "src": "/de/", "dest": "/de/index.html" },
+    { "src": "/de/reserve", "dest": "/de/reserve/index.html" },
+    { "src": "/de/reserve/", "dest": "/de/reserve/index.html" },
+    { "src": "/de/features", "dest": "/de/features.html" },
+    { "src": "/de/features/", "dest": "/de/features.html" },
+    { "src": "/es", "dest": "/es/index.html" },
+    { "src": "/es/", "dest": "/es/index.html" },
+    { "src": "/es/reserve", "dest": "/es/reserve/index.html" },
+    { "src": "/es/reserve/", "dest": "/es/reserve/index.html" },
+    { "src": "/es/features", "dest": "/es/features.html" },
+    { "src": "/es/features/", "dest": "/es/features.html" },
+    { "src": "/it", "dest": "/it/index.html" },
+    { "src": "/it/", "dest": "/it/index.html" },
+    { "src": "/it/reserve", "dest": "/it/reserve/index.html" },
+    { "src": "/it/reserve/", "dest": "/it/reserve/index.html" },
+    { "src": "/it/features", "dest": "/it/features.html" },
+    { "src": "/it/features/", "dest": "/it/features.html" },
+    { "src": "/ru", "dest": "/ru/index.html" },
+    { "src": "/ru/", "dest": "/ru/index.html" },
+    { "src": "/ru/reserve", "dest": "/ru/reserve/index.html" },
+    { "src": "/ru/reserve/", "dest": "/ru/reserve/index.html" },
+    { "src": "/ru/features", "dest": "/ru/features.html" },
+    { "src": "/ru/features/", "dest": "/ru/features.html" },
+    { "src": "/ko", "dest": "/ko/index.html" },
+    { "src": "/ko/", "dest": "/ko/index.html" },
+    { "src": "/ko/reserve", "dest": "/ko/reserve/index.html" },
+    { "src": "/ko/reserve/", "dest": "/ko/reserve/index.html" },
+    { "src": "/ko/features", "dest": "/ko/features.html" },
+    { "src": "/ko/features/", "dest": "/ko/features.html" },
+    { "src": "/ar", "dest": "/ar/index.html" },
+    { "src": "/ar/", "dest": "/ar/index.html" },
+    { "src": "/ar/reserve", "dest": "/ar/reserve/index.html" },
+    { "src": "/ar/reserve/", "dest": "/ar/reserve/index.html" },
+    { "src": "/ar/features", "dest": "/ar/features.html" },
+    { "src": "/ar/features/", "dest": "/ar/features.html" }
   ]
 }
